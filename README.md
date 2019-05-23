@@ -2,26 +2,57 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.0-rc.4.
 
-## Development server
+## webpack dynamic loader
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+``` ts
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+const load = plugin => import(`./${plugin}/${plugin}.module`);
+declare const __webpack_require__: any;
 
-## Build
+// only specific webpack require ensure
+const loaderModule: any = (id, src, mod) => __webpack_require__.e(id).then(el => __webpack_require__(src)[mod]);
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+// plugin = route 
+const loaderRouteModule = () => {
+  const config = plugins.find(p => p.route === location.pathname);
+  return loaderModule(config.chunk, config.src, config.name);
+};
 
-## Running unit tests
+const routes: Routes = [
+  {
+    path: ':pluginId',
+    loadChildren: async () => {
+      return loaderRouteModule();
+    }
+  }
+];
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
 
-## Running end-to-end tests
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+ Config
 
-## Further help
+```ts
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+const plugins = [
+   {
+    route: '/one',
+    chunk: 0,
+    src: './src/app/plugin-one/plugin-one.module.ts',
+    name: 'PluginOneModule',
+  },
+  {
+    route: '/two',
+    chunk: 1,
+    src: './src/app/plugin-two/plugin-two.module.ts',
+    name: 'PluginTwoModule',
+  }
+];
+
+```
