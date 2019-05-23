@@ -5,7 +5,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## webpack dynamic loader
 
 
-```ts
+```typescript
 
 dynamic import plugin
 
@@ -41,7 +41,7 @@ export class AppRoutingModule { }
 
  Config
 
-```ts
+```typescript
 
 const plugins = [
    {
