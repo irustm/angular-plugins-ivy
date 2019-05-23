@@ -7,7 +7,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ``` ts
 
+dynamic import plugin
+
 const load = plugin => import(`./${plugin}/${plugin}.module`);
+
 declare const __webpack_require__: any;
 
 // only specific webpack require ensure
