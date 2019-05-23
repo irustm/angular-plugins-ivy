@@ -5,7 +5,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## webpack dynamic loader
 
 
-``` ts
+```ts
 
 dynamic import plugin
 
