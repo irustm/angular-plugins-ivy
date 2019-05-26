@@ -7,7 +7,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ```typescript
 
-dynamic import plugin
+// dynamic import plugin
 
 const load = plugin => import(`./${plugin}/${plugin}.module`);
 
